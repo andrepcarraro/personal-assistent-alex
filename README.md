@@ -1,4 +1,4 @@
-# personal-assistent-alex
+# Alex - The automation personal assistent
 
 To execute the project follow the steps below:
 
