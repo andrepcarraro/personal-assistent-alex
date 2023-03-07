@@ -2,7 +2,7 @@
 
 To execute the project follow the steps below:
 
-- Clone the repoitory locally
+- Clone the repository locally
 - Install yarn (npm install --yarn)
 - Run yarn to install the dependencies
 - Run yarn dev
