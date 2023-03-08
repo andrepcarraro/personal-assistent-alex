@@ -4,7 +4,7 @@ import * as Styled from "./LandingPage.styles";
 export const LandingPage = () => {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
-  const microphoneRef = useRef<HTMLDivElement>(null);
+
   if (!("webkitSpeechRecognition" in window)) {
     return (
       <Styled.ResultTextArea>
@@ -13,9 +13,9 @@ export const LandingPage = () => {
     );
   }
   const SpeechRecognition = new webkitSpeechRecognition();
+
   const handleListing = () => {
     setIsListening(true);
-    if (microphoneRef.current) microphoneRef.current.classList.add("listening");
     SpeechRecognition.continuous = true;
     SpeechRecognition.start();
     SpeechRecognition.onresult = (event: SpeechRecognitionEventInit) => {
@@ -29,10 +29,9 @@ export const LandingPage = () => {
 
   const stopHandle = () => {
     setIsListening(false);
-    if (microphoneRef.current)
-      microphoneRef.current.classList.remove("listening");
     SpeechRecognition.stop();
   };
+  
   const handleReset = () => {
     stopHandle();
     setTranscript("");
@@ -40,7 +39,7 @@ export const LandingPage = () => {
 
   return (
     <Styled.LandingPage>
-      <Styled.MicrophoneDiv ref={microphoneRef} onClick={handleListing}>
+      <Styled.MicrophoneDiv onClick={handleListing}>
         <Styled.MicrophoneIcon />
         {isListening && <Styled.MicrophoneAnimationDiv />}
       </Styled.MicrophoneDiv>
