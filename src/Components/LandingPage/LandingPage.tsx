@@ -7,9 +7,9 @@ export const LandingPage = () => {
   const microphoneRef = useRef<HTMLDivElement>(null);
   if (!("webkitSpeechRecognition" in window)) {
     return (
-      <div className="mircophone-container">
+      <Styled.ResultTextArea>
         Browser is not Support Speech Recognition.
-      </div>
+      </Styled.ResultTextArea>
     );
   }
   const SpeechRecognition = new webkitSpeechRecognition();
