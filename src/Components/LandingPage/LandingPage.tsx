@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import * as Styled from "./LandingPage.styles";
+import Reader from "./reader.component"; 
+import text01 from "./text01.txt";
 
 export const LandingPage = () => {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
-
+  const [file, setFile] = useState<RequestInfo | URL >(text01)
   if (!("webkitSpeechRecognition" in window)) {
     return (
       <Styled.ResultTextArea>
@@ -37,6 +39,16 @@ export const LandingPage = () => {
     setTranscript("");
   };
 
+  const [textToRead, setTextToRead] = useState("");
+
+  useEffect(() => {
+    fetch(file)
+      .then((response) => response.text())
+      .then((text) => {
+        setTextToRead(text);
+      });
+  }, [file]);
+
   return (
     <Styled.LandingPage>
       <Styled.MicrophoneDiv onClick={handleListing}>
@@ -54,6 +66,7 @@ export const LandingPage = () => {
           <Styled.ButtonReset onClick={handleReset}>Reset</Styled.ButtonReset>
         )}
       </Styled.ButtonLayoutDiv>
+      <Reader textToRead={textToRead} question={transcript} setFile={setFile} handleReset={handleReset} />
     </Styled.LandingPage>
   );
 };
