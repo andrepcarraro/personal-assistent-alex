@@ -14,6 +14,9 @@ export const LandingPage = () => {
   }
   const SpeechRecognition = new webkitSpeechRecognition();
 
+  const synth = window.speechSynthesis;
+ 
+
   const handleListing = () => {
     setIsListening(true);
     SpeechRecognition.continuous = true;
@@ -30,8 +33,10 @@ export const LandingPage = () => {
   const stopHandle = () => {
     setIsListening(false);
     SpeechRecognition.stop();
+    const utterThis = new SpeechSynthesisUtterance(transcript);
+    synth.speak(utterThis);
   };
-  
+
   const handleReset = () => {
     stopHandle();
     setTranscript("");
