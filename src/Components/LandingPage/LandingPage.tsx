@@ -1,9 +1,23 @@
-import { useRef, useState } from "react";
+import {  useState, useEffect} from "react";
+import { processMessageToChatGPT } from "../../utill";
 import * as Styled from "./LandingPage.styles";
 
 export const LandingPage = () => {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
+  const [utterThis, setUtterThis] = useState(new SpeechSynthesisUtterance(''))
+  const [messages, setMessages] = useState<{message: string, sender: string, direction?: string}[]>([])
+  
+  useEffect(() => {
+    const newMessage = {
+      message: transcript,
+      sender: "user",
+      direction: 'outgoing'
+    }
+    const newMessages = [...messages, newMessage]
+    setMessages(newMessages)
+    if (transcript) processMessageToChatGPT(newMessages, setUtterThis, setMessages);
+  }, [ transcript])
 
   if (!("webkitSpeechRecognition" in window)) {
     return (
@@ -13,6 +27,7 @@ export const LandingPage = () => {
     );
   }
   const SpeechRecognition = new webkitSpeechRecognition();
+
 
   const handleListing = () => {
     setIsListening(true);
@@ -37,13 +52,17 @@ export const LandingPage = () => {
     setTranscript("");
   };
 
+   useEffect(() => {
+    window.speechSynthesis.speak(utterThis)
+  }, [utterThis, window.speechSynthesis.speak]);
+
   return (
+    <>
     <Styled.LandingPage>
       <Styled.MicrophoneDiv onClick={handleListing}>
         <Styled.MicrophoneIcon />
         {isListening && <Styled.MicrophoneAnimationDiv />}
       </Styled.MicrophoneDiv>
-
       <Styled.ResultTextArea>{transcript || ""}</Styled.ResultTextArea>
 
       <Styled.ButtonLayoutDiv>
@@ -55,5 +74,6 @@ export const LandingPage = () => {
         )}
       </Styled.ButtonLayoutDiv>
     </Styled.LandingPage>
+      </>
   );
 };
