@@ -1,5 +1,5 @@
   export const processMessageToChatGPT = async (chatMessages: any, setUtterThis: Function, setMessages: Function ) => {
-    const API_KEY = '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'
+    const API_KEY = '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'
     let apiMessage = chatMessages.map((messageObject: any) => {
       let role = ''
       if(messageObject.sender === ' ChatGPT') {
@@ -12,7 +12,7 @@
 
     const systemMessage = {
       role: 'user',
-      content: 'Me responda como Alex'
+      content: 'Seu nome será Alex, me responda como Alex quanto lhe for perguntado'
     }
 
     const apiRequestBody = {
