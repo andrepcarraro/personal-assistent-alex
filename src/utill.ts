@@ -3,7 +3,9 @@ export const processMessageToChatGPT = async (
   setUtterThis: Function,
   setMessages: Function
 ) => {
-  const API_KEY = import.meta.env.CHAT_GPT_SECRET_KEY;
+  console.log('aqui')
+  const API_KEY = import.meta.env.VITE_CHAT_GPT_SECRET_KEY;
+  console.log(API_KEY)
   let apiMessage = chatMessages.map((messageObject: any) => {
     let role = "";
     if (messageObject.sender === " ChatGPT") {
