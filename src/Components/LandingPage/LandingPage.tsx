@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { processMessageToChatGPT } from "../../utill";
+import { processMessageToChatGPT } from "../../Utils/ChatGPT/ChatGPT";
 import * as Styled from "./LandingPage.styles";
 
 export const LandingPage = () => {
@@ -54,9 +54,9 @@ export const LandingPage = () => {
     setTranscript("");
   };
 
-  useEffect(() => {
-    window.speechSynthesis.speak(utterThis);
-  }, [utterThis, window.speechSynthesis.speak]);
+  // useEffect(() => {
+  //   window.speechSynthesis.speak(utterThis);
+  // }, [utterThis, window.speechSynthesis.speak]);
 
   return (
     <>
