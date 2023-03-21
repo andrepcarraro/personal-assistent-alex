@@ -5,7 +5,7 @@ To execute the project follow the steps below:
 - Clone the repository locally
 - Install yarn (npm install --yarn)
 - Run yarn to install the dependencies
-- Run yarn dev
+- Run yarn start
 
 ## About this Project 
 This project consists on a Proof of concept, to implements a personal assistent for IOT applications and
