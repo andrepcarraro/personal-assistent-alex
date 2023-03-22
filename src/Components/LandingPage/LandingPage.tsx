@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
+import { ChatGPTMessageType } from "../../types";
 import { processMessageToChatGPT } from "../../Utils/ChatGPT/ChatGPT";
 import * as Styled from "./LandingPage.styles";
 
@@ -6,12 +8,24 @@ export const LandingPage = () => {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [utterThis, setUtterThis] = useState(new SpeechSynthesisUtterance(""));
-  const [messages, setMessages] = useState<
-    { message: string; sender: string; direction?: string }[]
-  >([]);
+  const [messages, setMessages] = useState<ChatGPTMessageType[]>([]);
+  const synth = window.speechSynthesis;
+  const defaultVoice = synth
+    .getVoices()
+    .find((voice) =>
+      voice.voiceURI === "Microsoft Daniel - Portuguese (Brazil)" ||
+      voice.voiceURI === "Google português do Brasil"
+        ? voice
+        : null
+    );
 
   useEffect(() => {
-    const newMessage = {
+    if (defaultVoice != null) utterThis.voice = defaultVoice;
+    synth.speak(utterThis);
+  }, [utterThis]);
+
+  useEffect(() => {
+    const newMessage: ChatGPTMessageType = {
       message: transcript,
       sender: "user",
       direction: "outgoing",
@@ -29,11 +43,12 @@ export const LandingPage = () => {
       </Styled.ResultTextArea>
     );
   }
+
   const SpeechRecognition = new webkitSpeechRecognition();
+  SpeechRecognition.lang = "pt-BR";
 
   const handleListing = () => {
     setIsListening(true);
-    SpeechRecognition.continuous = true;
     SpeechRecognition.start();
     SpeechRecognition.onresult = (event: SpeechRecognitionEventInit) => {
       let newTranscript = "";
@@ -45,6 +60,7 @@ export const LandingPage = () => {
   };
 
   const stopHandle = () => {
+    setUtterThis(new SpeechSynthesisUtterance(transcript));
     setIsListening(false);
     SpeechRecognition.stop();
   };
@@ -53,10 +69,6 @@ export const LandingPage = () => {
     stopHandle();
     setTranscript("");
   };
-
-  // useEffect(() => {
-  //   window.speechSynthesis.speak(utterThis);
-  // }, [utterThis, window.speechSynthesis.speak]);
 
   return (
     <>

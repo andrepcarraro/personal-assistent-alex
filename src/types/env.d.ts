@@ -1,9 +1,10 @@
-/// <reference types="vite/client" />
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      REACT_APP_CHAT_GPT_SECRET_KEY: string;
+      NODE_ENV: "development" | "production";
+    }
+  }
+}
 
-interface ImportMetaEnv {
-    readonly CHAT_GPT_SECRET_KEY: string
-  }
-  
-  interface ImportMeta {
-    readonly env: ImportMetaEnv
-  }
+export {};
