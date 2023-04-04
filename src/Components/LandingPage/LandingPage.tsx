@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 import { ChatGPTMessageType } from "../../types";
 import { processMessageToChatGPT } from "../../Utils/ChatGPT/ChatGPT";
 import * as Styled from "./LandingPage.styles";
-import { connect } from "mqtt";
+import mqtt from "mqtt";
 
 export const LandingPage = () => {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [utterThis, setUtterThis] = useState(new SpeechSynthesisUtterance(""));
   const [messages, setMessages] = useState<ChatGPTMessageType[]>([]);
+
   const synth = window.speechSynthesis;
   const defaultVoice = synth
     .getVoices()
@@ -19,14 +20,6 @@ export const LandingPage = () => {
         ? voice
         : null
     );
-
-  const mqtt_server = "broker.hivemq.com";
-  const mqtt_host = "mqtt://ec10ecee850d4e7fa7d7acfb416ff339.s2.eu.hivemq.cloud";
-  const mqtt_username = "Alex-IOT";
-  const mqtt_password = "Alex-Admin";
-  const mqtt_port = 8884;
-
-  const mqtt_topic = "led";
 
   useEffect(() => {
     if (defaultVoice != null) utterThis.voice = defaultVoice;
@@ -44,6 +37,25 @@ export const LandingPage = () => {
     if (transcript)
       processMessageToChatGPT(newMessages, setUtterThis, setMessages);
   }, [transcript]);
+
+  useEffect(() => {
+    const client = mqtt.connect("ws://73aa93375c024a12b448ddf523c4d162.s2.eu.hivemq.cloud/ws");
+    client.on("connect", () => {
+      console.log("connected");
+    });
+
+    client.publish("teste", "mensagem");
+
+    return () => {
+      if (client) {
+        client.end();
+      }
+    };
+  }, []);
+
+  const handleJsonMessage = (json: JSON) => {
+    const time = Date.now();
+  };
 
   if (!("webkitSpeechRecognition" in window)) {
     return (
@@ -79,23 +91,6 @@ export const LandingPage = () => {
     setTranscript("");
   };
 
-  const client = connect('mqtts://ec10ecee850d4e7fa7d7acfb416ff339.s2.eu.hivemq.cloud', {
-    username: mqtt_username,
-    password: mqtt_password,
-    port: 8884
-  });
-  // Criar uma conexão MQTT
-
-  // // Função para ligar o LED
-  const ligarLed = () => {
-    client.publish(mqtt_topic, "ON");
-  }
-
-  // // Função para desligar o LED
-  const desligarLed = () => {
-    client.publish(mqtt_topic, "OFF");
-  }
-
   return (
     <>
       <Styled.LandingPage>
@@ -112,8 +107,6 @@ export const LandingPage = () => {
           {transcript && (
             <Styled.ButtonReset onClick={handleReset}>Reset</Styled.ButtonReset>
           )}
-          <button onClick={() => ligarLed()}>LIGAR</button>
-          <button onClick={() => desligarLed()}>DESLIGAR</button>
         </Styled.ButtonLayoutDiv>
       </Styled.LandingPage>
     </>
