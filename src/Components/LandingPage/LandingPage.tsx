@@ -3,12 +3,17 @@ import { useState, useEffect } from "react";
 import { ChatGPTMessageType } from "../../types";
 import { processMessageToChatGPT } from "../../Utils/ChatGPT/ChatGPT";
 import * as Styled from "./LandingPage.styles";
+import mqtt, { IClientOptions } from "mqtt";
 
 export const LandingPage = () => {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [utterThis, setUtterThis] = useState(new SpeechSynthesisUtterance(""));
   const [messages, setMessages] = useState<ChatGPTMessageType[]>([]);
+  const options: IClientOptions = {
+    username: "hivemq.webclient.1680569923926",
+    password: "h@8Vp4b3#SYec2W;oQ>E",
+  };
   const synth = window.speechSynthesis;
   const defaultVoice = synth
     .getVoices()
@@ -35,6 +40,14 @@ export const LandingPage = () => {
     if (transcript)
       processMessageToChatGPT(newMessages, setUtterThis, setMessages);
   }, [transcript]);
+  const client = mqtt.connect(
+    "wss://73aa93375c024a12b448ddf523c4d162.s2.eu.hivemq.cloud:8884/mqtt",
+    options
+  );
+
+  client.on("connect", () => {
+    console.log("connected");
+  });
 
   if (!("webkitSpeechRecognition" in window)) {
     return (
@@ -80,6 +93,11 @@ export const LandingPage = () => {
         <Styled.ResultTextArea>{transcript || ""}</Styled.ResultTextArea>
 
         <Styled.ButtonLayoutDiv>
+          {/* <Styled.ButtonStop
+            onClick={() => client.publish("teste", "Oi, estou funcionando!")}
+          >
+            Teste
+          </Styled.ButtonStop> */}
           {isListening && (
             <Styled.ButtonStop onClick={stopHandle}>Stop</Styled.ButtonStop>
           )}
