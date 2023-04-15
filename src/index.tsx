@@ -4,6 +4,7 @@ import "./Styles/global.styles.css";
 import reportWebVitals from "./reportWebVitals";
 import { LandingPage } from "./Components/LandingPage/LandingPage";
 
+window.Buffer = window.Buffer || require("buffer").Buffer;
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
