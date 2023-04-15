@@ -1,17 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
+import { ChatGPTMessageType } from "../../types";
 import { processMessageToChatGPT } from "../../Utils/ChatGPT/ChatGPT";
 import * as Styled from "./LandingPage.styles";
+import { VoiceRecognitionButton } from "./components/VoiceRecognitionButton/VoiceRecognitionButton";
+import {
+  handleStop,
+  handleListening,
+  handleReset,
+} from "../../Utils/VoiceRecognition/VoiceRecognition";
+import { speak } from "../../Utils/VoiceSpeaker/VoiceSpeaker";
 
 export const LandingPage = () => {
   const [transcript, setTranscript] = useState("");
   const [isListening, setIsListening] = useState(false);
+
   const [utterThis, setUtterThis] = useState(new SpeechSynthesisUtterance(""));
-  const [messages, setMessages] = useState<
-    { message: string; sender: string; direction?: string }[]
-  >([]);
+  const [messages, setMessages] = useState<ChatGPTMessageType[]>([]);
 
   useEffect(() => {
-    const newMessage = {
+    if (!isListening) speak(utterThis);
+  }, [utterThis]);
+
+  useEffect(() => {
+    const newMessage: ChatGPTMessageType = {
       message: transcript,
       sender: "user",
       direction: "outgoing",
@@ -22,60 +34,41 @@ export const LandingPage = () => {
       processMessageToChatGPT(newMessages, setUtterThis, setMessages);
   }, [transcript]);
 
-  if (!("webkitSpeechRecognition" in window)) {
-    return (
+  return "webkitSpeechRecognition" in window ? (
+    <Styled.LandingPage>
+      <VoiceRecognitionButton
+        isListening={isListening}
+        handleListening={() =>
+          handleListening({ setIsListening, setTranscript })
+        }
+      />
+      <Styled.ResultTextArea>{transcript || ""}</Styled.ResultTextArea>
+
+      <Styled.ButtonLayoutDiv>
+        {/* <Styled.ButtonStop
+            onClick={() => client.publish("teste", "Oi, estou funcionando!")}
+          >
+            Teste
+          </Styled.ButtonStop> */}
+        {isListening && (
+          <Styled.ButtonStop onClick={() => handleStop({ setIsListening })}>
+            Stop
+          </Styled.ButtonStop>
+        )}
+        {transcript && (
+          <Styled.ButtonReset
+            onClick={() => handleReset({ setIsListening, setTranscript })}
+          >
+            Reset
+          </Styled.ButtonReset>
+        )}
+      </Styled.ButtonLayoutDiv>
+    </Styled.LandingPage>
+  ) : (
+    <Styled.LandingPage>
       <Styled.ResultTextArea>
         Browser is not Support Speech Recognition.
       </Styled.ResultTextArea>
-    );
-  }
-  const SpeechRecognition = new webkitSpeechRecognition();
-
-  const handleListing = () => {
-    setIsListening(true);
-    SpeechRecognition.continuous = true;
-    SpeechRecognition.start();
-    SpeechRecognition.onresult = (event: SpeechRecognitionEventInit) => {
-      let newTranscript = "";
-      for (let i = 0; i < event.results.length; i++) {
-        newTranscript += event.results[i][0].transcript;
-      }
-      setTranscript(newTranscript);
-    };
-  };
-
-  const stopHandle = () => {
-    setIsListening(false);
-    SpeechRecognition.stop();
-  };
-
-  const handleReset = () => {
-    stopHandle();
-    setTranscript("");
-  };
-
-  // useEffect(() => {
-  //   window.speechSynthesis.speak(utterThis);
-  // }, [utterThis, window.speechSynthesis.speak]);
-
-  return (
-    <>
-      <Styled.LandingPage>
-        <Styled.MicrophoneDiv onClick={handleListing}>
-          <Styled.MicrophoneIcon />
-          {isListening && <Styled.MicrophoneAnimationDiv />}
-        </Styled.MicrophoneDiv>
-        <Styled.ResultTextArea>{transcript || ""}</Styled.ResultTextArea>
-
-        <Styled.ButtonLayoutDiv>
-          {isListening && (
-            <Styled.ButtonStop onClick={stopHandle}>Stop</Styled.ButtonStop>
-          )}
-          {transcript && (
-            <Styled.ButtonReset onClick={handleReset}>Reset</Styled.ButtonReset>
-          )}
-        </Styled.ButtonLayoutDiv>
-      </Styled.LandingPage>
-    </>
+    </Styled.LandingPage>
   );
 };
