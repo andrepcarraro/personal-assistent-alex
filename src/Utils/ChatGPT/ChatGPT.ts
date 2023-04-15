@@ -19,7 +19,7 @@ export const processMessageToChatGPT = async (
   const systemMessage = {
     role: "user",
     content:
-      `Substitua em todas suas respostas "ChatGPT" por "Alex"`,
+      `Substitua em todas suas respostas ChatGPT por Alex`,
   };
 
   const apiRequestBody = {
