@@ -10,6 +10,7 @@ import {
   handleReset,
 } from "../../Utils/VoiceRecognition/VoiceRecognition";
 import { speak } from "../../Utils/VoiceSpeaker/VoiceSpeaker";
+import { ChatArea } from "./components/ChatArea/ChatArea";
 
 export const LandingPage = () => {
   const [transcript, setTranscript] = useState("");
@@ -36,13 +37,9 @@ export const LandingPage = () => {
 
   return "webkitSpeechRecognition" in window ? (
     <Styled.LandingPage>
-      <VoiceRecognitionButton
-        isListening={isListening}
-        handleListening={() =>
-          handleListening({ setIsListening, setTranscript })
-        }
-      />
-      <Styled.ResultTextArea>{transcript || ""}</Styled.ResultTextArea>
+
+      {/* <Styled.ResultTextArea>{transcript || ""}</Styled.ResultTextArea> */}
+      <ChatArea />
 
       <Styled.ButtonLayoutDiv>
         {/* <Styled.ButtonStop
@@ -66,9 +63,7 @@ export const LandingPage = () => {
     </Styled.LandingPage>
   ) : (
     <Styled.LandingPage>
-      <Styled.ResultTextArea>
         Browser is not Support Speech Recognition.
-      </Styled.ResultTextArea>
     </Styled.LandingPage>
   );
 };
