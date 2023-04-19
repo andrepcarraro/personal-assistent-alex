@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { ChatGPTMessageType } from "../../types";
 import { processMessageToChatGPT } from "../../Utils/ChatGPT/ChatGPT";
 import * as Styled from "./LandingPage.styles";
-import { VoiceRecognitionButton } from "./components/VoiceRecognitionButton/VoiceRecognitionButton";
 import {
   handleStop,
   handleListening,

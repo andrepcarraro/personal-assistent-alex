@@ -31,7 +31,7 @@ const VoiceButtonAnimation = keyframes`
 
 export const MicrophoneAnimationDiv = styled.div`
   ${baseMicrophoneDivStyle}
-  width: 28px;
+  width: 36px;
   background-image: linear-gradient(128deg, transparent, ${ACTIVE_BTN_COLOR});
   animation-name: ${VoiceButtonAnimation};
   animation-duration: 1.5s;

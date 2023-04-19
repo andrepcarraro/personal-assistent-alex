@@ -2,12 +2,15 @@ import styled from "styled-components";
 import { FiSend, FiMic } from "react-icons/fi";
 
 export const InputArea = styled.div({
+  position: "absolute",
+  bottom: 10,
   display: "flex",
   justifyContent: "left",
-  width: "55vw",
+  width: "60vw",
   borderRadius: "20px",
   background: "rgb(41 40 40 / 200%)",
   minWidth: "160px",
+  height:'36px'
 });
 
 export const UserTextInput = styled.textarea({
@@ -15,9 +18,8 @@ export const UserTextInput = styled.textarea({
   border: "none",
   marginLeft: "20px",
   color: "white",
-  fontFamily: "sans-serif",
   fontSize: "0.9rem",
-  lineHeight: "1rem",
+  paddingTop: '10px',
   fontWeight: 300,
   background: "rgb(41 40 40 / 200%)",
   resize: "none",

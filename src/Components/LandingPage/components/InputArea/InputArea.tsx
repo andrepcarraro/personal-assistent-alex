@@ -1,36 +1,58 @@
 import { VoiceRecognitionButton } from "../VoiceRecognitionButton/VoiceRecognitionButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Styled from "./InputArea.styles";
 import {
   handleListening,
   handleStop,
 } from "../../../../Utils/VoiceRecognition/VoiceRecognition";
+import { InputAreaProps } from "./InputArea.types";
+import { MessageObjType } from "../../../../types/message.types";
+import { ChatGPTMessageType } from "../../../../types";
+import { processMessageToChatGPT } from "../../../../Utils/ChatGPT/ChatGPT";
+import { speak } from "../../../../Utils/VoiceSpeaker/VoiceSpeaker";
 
-export const InputArea = () => {
+export const InputArea = ({ messages, setMessages }: InputAreaProps) => {
   const [isListening, setIsListening] = useState(false);
-  const [height, setheight] = useState(28);
   const [transcript, setTranscript] = useState("");
+  const [chatGPTMessages, setChatGPTMessages] = useState<ChatGPTMessageType[]>(
+    []
+  );
+  const [utterThis, setUtterThis] = useState(new SpeechSynthesisUtterance(""));
+
+  useEffect(() => {
+    const newMessage: ChatGPTMessageType = {
+      message: transcript,
+      sender: "user",
+      direction: "outgoing",
+    };
+
+    let chatGPTMessagesArray = chatGPTMessages.slice();
+    chatGPTMessagesArray.push(newMessage);
+    setChatGPTMessages(chatGPTMessagesArray);
+
+    if (transcript)
+      processMessageToChatGPT(chatGPTMessagesArray, setUtterThis, setMessages);
+  }, [transcript]);
+
+  useEffect(() => {
+    speak(utterThis);
+  }, [utterThis]);
 
   const getInputValue = () => {
     const input = document.getElementById(
       "inputTextMessage"
     ) as HTMLTextAreaElement | null;
-    console.log(input ? input.value : "");
+
+    const newMessage: MessageObjType = {
+      side: "message",
+      text: input ? input.value : "",
+    };
+    if (newMessage.text !== "") {
+      setMessages(newMessage);
+      setTranscript(newMessage.text);
+    }
+    if (input) input.value = "";
   };
-
-  const changeHeight = () => {
-    console.log(height);
-    setheight(countLine());
-  };
-
-  function countLine() {
-    const textArea = document.getElementById(
-      "inputTextMessage"
-    ) as HTMLTextAreaElement | null;
-    console.log(textArea?.scrollHeight);
-
-    return textArea ? textArea.scrollHeight :28;
-  }
 
   return (
     <Styled.InputArea>
