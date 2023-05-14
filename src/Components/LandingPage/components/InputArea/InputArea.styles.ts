@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { FiSend, FiMic } from "react-icons/fi";
+import { FiCloudLightning, FiSend } from "react-icons/fi";
+import { ColorGuide } from "../../../../Styles/StyleGuide";
 
 export const InputArea = styled.div({
   position: "absolute",
@@ -8,20 +9,20 @@ export const InputArea = styled.div({
   justifyContent: "left",
   width: "60vw",
   borderRadius: "20px",
-  background: "rgb(41 40 40 / 200%)",
+  background: ColorGuide.gray2,
   minWidth: "160px",
-  height:'36px'
+  height: "36px",
 });
 
 export const UserTextInput = styled.textarea({
   width: "85%",
   border: "none",
   marginLeft: "20px",
-  color: "white",
+  color: ColorGuide.white,
   fontSize: "0.9rem",
-  paddingTop: '10px',
+  paddingTop: "10px",
   fontWeight: 300,
-  background: "rgb(41 40 40 / 200%)",
+  background: ColorGuide.gray2,
   resize: "none",
   maxHeight: "200px",
   overflowY: "hidden",
@@ -30,7 +31,7 @@ export const UserTextInput = styled.textarea({
   },
 });
 
-const BaseCustomBtn = styled.button({
+export const BaseCustomBtn = styled.button({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -50,23 +51,61 @@ const BaseCustomBtn = styled.button({
 
 export const SendBtn = styled(BaseCustomBtn)({});
 
+export const ManualOpsBtn = styled(BaseCustomBtn)({});
+
+export const ManualBtn = styled("button")({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  border: "none",
+  background: "transparent",
+  width: "100%",
+  cursor: "pointer",
+  padding: "3px 0",
+  color: ColorGuide.white,
+  "&:hover": {
+    opacity: 0.5,
+  },
+  "&:active": {
+    opacity: 0.8,
+  },
+});
+
+export const ManualOpsDiv = styled("div")({
+  position: "relative",
+  display: "flex",
+});
+
 export const SendIcon = styled(FiSend)({
   width: 20,
   height: 20,
-  color: "rgb(20 20 20 / 200%)",
+  color: ColorGuide.gray3,
 });
 
-export const MicBtn = styled(BaseCustomBtn)({});
-
-export const MicrophoneIcon = styled(FiMic)({
+export const ManualOpsIcon = styled(FiCloudLightning)({
   width: 20,
   height: 20,
-  color: "rgb(20 20 20 / 200%)",
+  color: ColorGuide.gray3,
 });
 
 export const BtnsDiv = styled.div({
   display: "flex",
   justifyContent: "right",
-  width: "15%",
+  width: "25%",
   marginRight: "20px",
+});
+
+
+export const DropdownDiv = styled.div({
+  position: "absolute",
+  background: ColorGuide.gray2,
+  zIndex: 1,
+  display: "block",
+  bottom: "40px",
+  left: "-4vw",
+  width: "12vw",
+  maxWidth: "130px",
+  minWidth: "50px",
+  borderRadius: "5px",
+  padding: "6px",
 });

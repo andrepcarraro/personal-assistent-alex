@@ -6,6 +6,7 @@ import { MessageObjType } from "../../../../types/message.types";
 
 export const ChatArea = () => {
   const [messages, setMessages] = useState<Array<MessageObjType>>([]);
+  const [soundStatus, setSoundStatus] = useState(true);
 
   const setMessagesArray = (newMessage: MessageObjType) => {
     let messagesArray = messages.slice();
@@ -13,8 +14,17 @@ export const ChatArea = () => {
     setMessages(messagesArray);
   };
 
+  const handleSoundStatus = () => {
+    setSoundStatus(!soundStatus);
+  };
+
   return (
     <Styled.ChatArea>
+      <Styled.ChatHeader>
+        <Styled.SoundButton onClick={handleSoundStatus}>
+          {soundStatus ? <Styled.SoundOnIcon /> : <Styled.SoundOffIcon />}
+        </Styled.SoundButton>
+      </Styled.ChatHeader>
       <Styled.ChatMessages>
         {messages.map((messageObj, index) => {
           return (
@@ -26,7 +36,7 @@ export const ChatArea = () => {
           );
         })}
       </Styled.ChatMessages>
-      <InputArea messages={messages} setMessages={setMessagesArray} />
+      <InputArea setChatMessages={setMessagesArray} soundStatus={soundStatus} />
     </Styled.ChatArea>
   );
 };

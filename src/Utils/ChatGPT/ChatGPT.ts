@@ -3,7 +3,8 @@ import { ChatGPTMessageType } from "../../types";
 export const processMessageToChatGPT = async (
   chatMessages: ChatGPTMessageType[],
   setUtterThis: Function,
-  setMessages: Function
+  setChatGptMessages: Function,
+  setChatMessages: Function
 ) => {
   const API_KEY = process.env.REACT_APP_CHAT_GPT_SECRET_KEY;
   let apiMessage = chatMessages.map((messageObject: any) => {
@@ -18,8 +19,7 @@ export const processMessageToChatGPT = async (
 
   const systemMessage = {
     role: "user",
-    content:
-      `Substitua em todas suas respostas ChatGPT por Alex`,
+    content: `Seu nome será Raio`,
   };
 
   const apiRequestBody = {
@@ -41,12 +41,16 @@ export const processMessageToChatGPT = async (
         setUtterThis(
           new SpeechSynthesisUtterance(data.choices[0].message.content)
         );
-      setMessages([
+      setChatGptMessages([
         ...chatMessages,
         {
           message: data.choices[0].message.content,
           sender: "ChatGPT",
         },
       ]);
+      setChatMessages({
+        text: data.choices[0].message.content,
+        side: "response",
+      });
     });
 };

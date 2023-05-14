@@ -1,41 +1,44 @@
 import { VoiceRecognitionButton } from "../VoiceRecognitionButton/VoiceRecognitionButton";
-import { useEffect, useState } from "react";
+import { useEffect, useState, KeyboardEvent } from "react";
 import * as Styled from "./InputArea.styles";
 import {
   handleListening,
   handleStop,
+  messageGateway,
 } from "../../../../Utils/VoiceRecognition/VoiceRecognition";
 import { InputAreaProps } from "./InputArea.types";
 import { MessageObjType } from "../../../../types/message.types";
 import { ChatGPTMessageType } from "../../../../types";
-import { processMessageToChatGPT } from "../../../../Utils/ChatGPT/ChatGPT";
 import { speak } from "../../../../Utils/VoiceSpeaker/VoiceSpeaker";
+import { MqttCreateClient } from "../../../../Utils/MqttConnection/MqttConnection";
 
-export const InputArea = ({ messages, setMessages }: InputAreaProps) => {
+export const InputArea = ({ setChatMessages, soundStatus }: InputAreaProps) => {
   const [isListening, setIsListening] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [chatGPTMessages, setChatGPTMessages] = useState<ChatGPTMessageType[]>(
     []
   );
   const [utterThis, setUtterThis] = useState(new SpeechSynthesisUtterance(""));
+  const mqttClient = MqttCreateClient();
 
   useEffect(() => {
-    const newMessage: ChatGPTMessageType = {
-      message: transcript,
-      sender: "user",
-      direction: "outgoing",
-    };
-
-    let chatGPTMessagesArray = chatGPTMessages.slice();
-    chatGPTMessagesArray.push(newMessage);
-    setChatGPTMessages(chatGPTMessagesArray);
-
-    if (transcript)
-      processMessageToChatGPT(chatGPTMessagesArray, setUtterThis, setMessages);
+    if (transcript) {
+      messageGateway({
+        transcript,
+        mqttClient,
+        chatGPTMessages,
+        setChatGPTMessages,
+        setChatMessages,
+        setUtterThis,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcript]);
 
   useEffect(() => {
-    speak(utterThis);
+    if (soundStatus) speak(utterThis);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [utterThis]);
 
   const getInputValue = () => {
@@ -48,10 +51,21 @@ export const InputArea = ({ messages, setMessages }: InputAreaProps) => {
       text: input ? input.value : "",
     };
     if (newMessage.text !== "") {
-      setMessages(newMessage);
+      setChatMessages(newMessage);
       setTranscript(newMessage.text);
     }
     if (input) input.value = "";
+  };
+
+  const handleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.code === "Enter") {
+      event.preventDefault();
+      getInputValue();
+    }
   };
 
   return (
@@ -59,17 +73,41 @@ export const InputArea = ({ messages, setMessages }: InputAreaProps) => {
       <Styled.UserTextInput
         id="inputTextMessage"
         placeholder="Digite aqui"
+        onKeyPress={handleKeyPress}
       ></Styled.UserTextInput>
       <Styled.BtnsDiv>
         <VoiceRecognitionButton
           isListening={isListening}
           handleListening={() =>
-            handleListening({ setIsListening, setTranscript })
+            handleListening({
+              setIsListening,
+              setTranscript,
+              setChatMessages,
+            })
           }
           handleStop={() => {
             handleStop({ setIsListening });
           }}
         />
+        <Styled.ManualOpsDiv>
+          <Styled.ManualOpsBtn onClick={handleDropdown}>
+            <Styled.ManualOpsIcon />
+          </Styled.ManualOpsBtn>
+          {isDropdownOpen && (
+            <Styled.DropdownDiv>
+              <Styled.ManualBtn
+                onClick={() => {
+                  mqttClient.publish("socket", "1");
+                }}
+              >Ligar</Styled.ManualBtn>
+              <Styled.ManualBtn
+                onClick={() => {
+                  mqttClient.publish("socket", "0");
+                }}
+              >Desligar</Styled.ManualBtn>
+            </Styled.DropdownDiv>
+          )}
+        </Styled.ManualOpsDiv>
         <Styled.SendBtn onClick={getInputValue}>
           <Styled.SendIcon />
         </Styled.SendBtn>

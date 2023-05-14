@@ -1,5 +1,6 @@
 import { FiMic } from "react-icons/fi";
 import styled, { keyframes } from "styled-components";
+import { ColorGuide } from "../../../../Styles/StyleGuide";
 
 const ACTIVE_BTN_COLOR = "rgb(50 20 20 / 200%)";
 
@@ -17,6 +18,9 @@ export const MicrophoneDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  &:hover {
+    opacity: 0.5;
+  }
 `;
 
 const VoiceButtonAnimation = keyframes`
@@ -39,24 +43,6 @@ export const MicrophoneAnimationDiv = styled.div`
   position: absolute;
 `;
 
-export const MicBtn = styled.button({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  border: "none",
-  background: "transparent",
-  borderRadius: "50%",
-  width: "38px",
-  cursor: "pointer",
-
-  "&:hover": {
-    opacity: 0.5,
-  },
-  "&:active": {
-    opacity: 0.8,
-  },
-});
-
 interface MicIconType {
   $isListening: boolean;
 }
@@ -64,5 +50,5 @@ interface MicIconType {
 export const MicIcon = styled(FiMic)<MicIconType>((props) => ({
   width: 20,
   height: 20,
-  color: props.$isListening ? ACTIVE_BTN_COLOR : "rgb(20 20 20 / 200%)",
+  color: props.$isListening ? ACTIVE_BTN_COLOR : ColorGuide.gray3,
 }));
