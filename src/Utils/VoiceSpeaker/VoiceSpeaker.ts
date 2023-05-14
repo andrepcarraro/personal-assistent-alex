@@ -12,4 +12,8 @@ const speak = (utterThis: SpeechSynthesisUtterance) => {
   if (defaultVoice != null) utterThis.voice = defaultVoice;
   synth.speak(utterThis);
 };
-export { speak };
+
+const speakAbort = () => {
+  synth.cancel()
+};
+export { speak, speakAbort};
