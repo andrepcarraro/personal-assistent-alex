@@ -1,12 +1,25 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InputArea } from "../InputArea/InputArea";
 import { MessageBox } from "../MessageBox/MessageBox";
 import * as Styled from "./ChatArea.styles";
 import { MessageObjType } from "../../../../types/message.types";
+import { speakAbort } from "../../../../Utils/VoiceSpeaker/VoiceSpeaker";
 
 export const ChatArea = () => {
   const [messages, setMessages] = useState<Array<MessageObjType>>([]);
   const [soundStatus, setSoundStatus] = useState(true);
+  const divRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (divRef.current) {
+      let current = divRef.current;
+      current.scrollTo({
+        left: 0,
+        top: current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [divRef.current?.scrollHeight]);
 
   const setMessagesArray = (newMessage: MessageObjType) => {
     let messagesArray = messages.slice();
@@ -15,6 +28,8 @@ export const ChatArea = () => {
   };
 
   const handleSoundStatus = () => {
+    if (soundStatus) speakAbort();
+
     setSoundStatus(!soundStatus);
   };
 
@@ -25,7 +40,7 @@ export const ChatArea = () => {
           {soundStatus ? <Styled.SoundOnIcon /> : <Styled.SoundOffIcon />}
         </Styled.SoundButton>
       </Styled.ChatHeader>
-      <Styled.ChatMessages>
+      <Styled.ChatMessages ref={divRef}>
         {messages.map((messageObj, index) => {
           return (
             <MessageBox

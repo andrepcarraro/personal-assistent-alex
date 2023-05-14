@@ -26,4 +26,3 @@ export type messageGatewayProps = {
   setUtterThis: (utterThis: SpeechSynthesisUtterance) => void;
 };
 
-export type commandListType = Array<string>;

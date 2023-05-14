@@ -13,7 +13,7 @@ export const MessageBox = styled.div<MessageBoxProps>((props) => ({
   color: ColorGuide.white,
   justifyContent: props.$MessageSide === "message" ? "right" : "left",
   padding: "12px",
-  margin: "0 6px",
+  margin: "0 9px",
   borderRadius: "6px",
   overflowWrap: "break-word",
   overflow: "hidden",
@@ -29,7 +29,8 @@ export const MessageContainer = styled.div<MessageBoxProps>((props) => ({
   justifyContent: props.$MessageSide === "message" ? "right" : "left",
 }));
 
-export const AvatarContainer = styled.div(() => ({
+export const AvatarContainer = styled.div<MessageBoxProps>((props) => ({
   height: "100%",
   paddingTop: "2px",
+  paddingRight: props.$MessageSide === "message" ? "4px" : "0",
 }));

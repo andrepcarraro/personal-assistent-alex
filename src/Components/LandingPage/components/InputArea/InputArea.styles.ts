@@ -95,11 +95,10 @@ export const BtnsDiv = styled.div({
   marginRight: "20px",
 });
 
-
 export const DropdownDiv = styled.div({
   position: "absolute",
   background: ColorGuide.gray2,
-  zIndex: 1,
+  zIndex: 2,
   display: "block",
   bottom: "40px",
   left: "-4vw",

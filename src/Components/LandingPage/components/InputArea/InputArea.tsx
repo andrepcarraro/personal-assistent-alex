@@ -32,6 +32,7 @@ export const InputArea = ({ setChatMessages, soundStatus }: InputAreaProps) => {
         setChatMessages,
         setUtterThis,
       });
+      setTranscript("")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transcript]);
@@ -97,14 +98,30 @@ export const InputArea = ({ setChatMessages, soundStatus }: InputAreaProps) => {
             <Styled.DropdownDiv>
               <Styled.ManualBtn
                 onClick={() => {
-                  mqttClient.publish("socket", "1");
+                  const newMessage: MessageObjType = {
+                    side: "message",
+                    text: "Ligar Equipamento",
+                  };
+                  setChatMessages(newMessage);
+                  setTranscript(newMessage.text);
+                  handleDropdown();
                 }}
-              >Ligar</Styled.ManualBtn>
+              >
+                Ligar
+              </Styled.ManualBtn>
               <Styled.ManualBtn
                 onClick={() => {
-                  mqttClient.publish("socket", "0");
+                  const newMessage: MessageObjType = {
+                    side: "message",
+                    text: "Desligar Equipamento",
+                  };
+                  setChatMessages(newMessage);
+                  setTranscript(newMessage.text);
+                  handleDropdown();
                 }}
-              >Desligar</Styled.ManualBtn>
+              >
+                Desligar
+              </Styled.ManualBtn>
             </Styled.DropdownDiv>
           )}
         </Styled.ManualOpsDiv>

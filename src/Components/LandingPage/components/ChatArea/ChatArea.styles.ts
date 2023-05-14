@@ -12,8 +12,8 @@ export const ChatArea = styled.div({
   borderRadius: "20px",
   background: ColorGuide.gray1,
   border: "none",
-  marginTop: "50px",
-  padding: "0 30px",
+  marginTop: "30px",
+  padding: "0 30px 50px 30px",
 });
 
 export const ChatMessages = styled.div({
@@ -23,7 +23,7 @@ export const ChatMessages = styled.div({
   overflowY: "scroll",
 
   "&::-webkit-scrollbar": {
-    width: "4px",
+    width: "3px",
   },
   "&::-webkit-scrollbar-track": {
     backgroundColor: "transparent",
@@ -33,7 +33,7 @@ export const ChatMessages = styled.div({
     height: 0,
   },
   "&::-webkit-scrollbar-thumb": {
-    background: "rgb(20 20 20 / 200%)",
+    background: ColorGuide.gray2,
     borderRadius: "20px",
   },
 });

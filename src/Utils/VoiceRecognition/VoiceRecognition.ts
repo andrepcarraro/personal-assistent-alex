@@ -8,6 +8,7 @@ import {
 } from "./VoiceRecognition.types";
 import { ChatGPTMessageType } from "../../types";
 import { processMessageToChatGPT } from "../ChatGPT/ChatGPT";
+import { SendEspCommand } from "../MqttConnection/MqttConnection";
 
 const Speech = new webkitSpeechRecognition();
 Speech.lang = "pt-BR";
@@ -50,24 +51,22 @@ const messageGateway = ({
   let espCommandBestMatchObj = getBestMatch(transcript, COMMANDS);
   if (espCommandBestMatchObj.rating > 0.4) {
     if (ON_COMMANDS.includes(espCommandBestMatchObj.text)) {
-      mqttClient.publish("socket", "1");
-      setUtterThis(
-        new SpeechSynthesisUtterance("Equipamento acionado com sucesso")
-      );
-      setChatMessages({
-        text: "Equipamento acionado com sucesso",
-        side: "response",
+      SendEspCommand({
+        chatMessage: "Equipamento acionado com sucesso",
+        command: "1",
+        mqttClient: mqttClient,
+        setChatMessages: setChatMessages,
+        setUtterThis: setUtterThis,
       });
     }
 
     if (OFF_COMMANDS.includes(espCommandBestMatchObj.text)) {
-      mqttClient.publish("socket", "0");
-      setUtterThis(
-        new SpeechSynthesisUtterance("Equipamento desligado com sucesso")
-      );
-      setChatMessages({
-        text: "Equipamento desligado com sucesso",
-        side: "response",
+      SendEspCommand({
+        chatMessage: "Equipamento desligado com sucesso",
+        command: "0",
+        mqttClient: mqttClient,
+        setChatMessages: setChatMessages,
+        setUtterThis: setUtterThis,
       });
     }
   } else {

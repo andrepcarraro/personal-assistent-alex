@@ -9,7 +9,7 @@ export const MessageBox = ({
   return (
     <Styled.MessageContainer $MessageSide={messageBoxSide}>
       {messageBoxSide === "response" && (
-        <Styled.AvatarContainer>
+        <Styled.AvatarContainer $MessageSide={messageBoxSide}>
           <Avatar name="" image={{ src: "raio.png" }} />
         </Styled.AvatarContainer>
       )}
@@ -17,7 +17,7 @@ export const MessageBox = ({
         {messageBoxText}
       </Styled.MessageBox>
       {messageBoxSide === "message" && (
-        <Styled.AvatarContainer>
+        <Styled.AvatarContainer $MessageSide={messageBoxSide}>
           <Avatar name="" image={{ src: "cloud.png" }} />
         </Styled.AvatarContainer>
       )}
