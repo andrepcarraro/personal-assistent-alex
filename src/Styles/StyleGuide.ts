@@ -1,6 +1,6 @@
 export const ColorGuide = {
     primary: '#FFD460',
-    secondary:'#FFD400',
+    secondary:'#FFD401',
     white:'#EEEEEE',
     whiteOpacity:'rgb(255 255 255 / 85% )',
     gray1:'#393E30',
