@@ -18,7 +18,7 @@ export const SendEspCommand = ({
   setUtterThis,
   setChatMessages,
 }: SendEspCommandProps) => {
-  mqttClient.publish("Socket", command);
+  mqttClient.publish("Sockets", command);
   setUtterThis(
     new SpeechSynthesisUtterance(chatMessage)
   );

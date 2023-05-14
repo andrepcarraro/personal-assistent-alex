@@ -27,6 +27,7 @@ const handleListening = ({
     }
     setTranscript(newTranscript);
     setChatMessages({ text: newTranscript, side: "message" });
+    handleStop({setIsListening})
   };
 };
 

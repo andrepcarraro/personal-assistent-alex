@@ -6,4 +6,5 @@ export const MQTT_OPTIONS: IClientOptions = {
 };
 
 export const CONNECTION_URL =
-  "wss://73aa93375c024a12b448ddf523c4d162.s2.eu.hivemq.cloud:8884/mqtt";
+  "wss://c870f335513246ff868ab19f9b93fb12.s2.eu.hivemq.cloud:8884/mqtt";
+//"wss://73aa93375c024a12b448ddf523c4d162.s2.eu.hivemq.cloud:8884/mqtt";
