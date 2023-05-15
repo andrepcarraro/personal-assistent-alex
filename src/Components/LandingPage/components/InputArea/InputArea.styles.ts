@@ -20,6 +20,10 @@ export const UserTextInput = styled.textarea({
   marginLeft: "20px",
   color: ColorGuide.white,
   fontSize: "0.9rem",
+  '@media screen and (max-width: 800px)': {
+    fontSize: "12px",
+
+  },
   paddingTop: "10px",
   fontWeight: 300,
   background: ColorGuide.gray2,
