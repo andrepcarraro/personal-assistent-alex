@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "buffer": "^6.0.3",
+    "lottie-react": "^2.4.0",
     "mqtt": "^4.3.7",
     "netlify-cli": "^15.0.2",
     "process": "^0.11.10",

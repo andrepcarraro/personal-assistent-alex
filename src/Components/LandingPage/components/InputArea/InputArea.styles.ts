@@ -10,7 +10,7 @@ export const InputArea = styled.div({
   width: "60vw",
   borderRadius: "20px",
   background: ColorGuide.gray2,
-  minWidth: "160px",
+  minWidth: "252px",
   height: "36px",
 });
 
@@ -93,6 +93,7 @@ export const BtnsDiv = styled.div({
   justifyContent: "right",
   width: "25%",
   marginRight: "20px",
+  minWidth: '120px'
 });
 
 export const DropdownDiv = styled.div({

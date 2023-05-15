@@ -2,8 +2,6 @@ import { FiMic } from "react-icons/fi";
 import styled, { keyframes } from "styled-components";
 import { ColorGuide } from "../../../../Styles/StyleGuide";
 
-const ACTIVE_BTN_COLOR = "rgb(50 20 20 / 200%)";
-
 const baseMicrophoneDivStyle = `
       height: 100%; 
       border-radius: 50%;
@@ -36,7 +34,7 @@ const VoiceButtonAnimation = keyframes`
 export const MicrophoneAnimationDiv = styled.div`
   ${baseMicrophoneDivStyle}
   width: 36px;
-  background-image: linear-gradient(128deg, transparent, ${ACTIVE_BTN_COLOR});
+  background-image: linear-gradient(128deg, transparent, ${ColorGuide.secondary});
   animation-name: ${VoiceButtonAnimation};
   animation-duration: 1.5s;
   animation-iteration-count: infinite;
@@ -50,5 +48,5 @@ interface MicIconType {
 export const MicIcon = styled(FiMic)<MicIconType>((props) => ({
   width: 20,
   height: 20,
-  color: props.$isListening ? ACTIVE_BTN_COLOR : ColorGuide.gray3,
+  color: props.$isListening ? ColorGuide.secondary : ColorGuide.gray3,
 }));

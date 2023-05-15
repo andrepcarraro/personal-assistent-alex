@@ -9,11 +9,17 @@ export const ChatArea = styled.div({
   flexDirection: "column",
   width: "60vw",
   height: "85vh",
+  padding: "0 30px 50px 30px",
+  marginTop: "30px",
+  '@media screen and (max-width: 800px)': {
+    height: "65vh",
+    padding: "0 20px 30px 20px",
+    marginTop: "60px",
+  },
   borderRadius: "20px",
   background: ColorGuide.gray1,
   border: "none",
-  marginTop: "30px",
-  padding: "0 30px 50px 30px",
+  minWidth: "220px",
 });
 
 export const ChatMessages = styled.div({
