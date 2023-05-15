@@ -1,8 +1,8 @@
 import { IClientOptions } from "mqtt";
 
 export const MQTT_OPTIONS: IClientOptions = {
-  username: "hivemq.webclient.1684186104777", //"hivemq.webclient.1680569923926",
-  password: "<LP,9MO@*0dpu6kNzH1n", // "h@8Vp4b3#SYec2W;oQ>E",
+  username: "hivemq.webclient.1684187502185", //"hivemq.webclient.1680569923926",
+  password: "2wrpi:1W7Q?0NAxZ%#aH", // "h@8Vp4b3#SYec2W;oQ>E",
 };
 
 export const CONNECTION_URL =
