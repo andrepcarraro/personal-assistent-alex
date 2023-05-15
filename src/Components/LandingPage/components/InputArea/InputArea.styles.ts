@@ -10,7 +10,7 @@ export const InputArea = styled.div({
   width: "60vw",
   borderRadius: "20px",
   background: ColorGuide.gray2,
-  minWidth: "252px",
+  minWidth: "258px",
   height: "36px",
 });
 
