@@ -13,7 +13,7 @@ export const ChatArea = styled.div({
   marginTop: "30px",
   '@media screen and (max-width: 800px)': {
     height: "65vh",
-    padding: "0 20px 30px 20px",
+    padding: "0 20px 40px 20px",
     marginTop: "60px",
   },
   borderRadius: "20px",
